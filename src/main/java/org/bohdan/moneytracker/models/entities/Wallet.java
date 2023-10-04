@@ -1,10 +1,13 @@
 package org.bohdan.moneytracker.models.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "wallets")
+@Data
 public class Wallet
 {
     @Id

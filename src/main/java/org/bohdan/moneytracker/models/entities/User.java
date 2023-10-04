@@ -1,10 +1,13 @@
 package org.bohdan.moneytracker.models.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @Table(name = "users")
+@Data
 public class User
 {
     @Id
