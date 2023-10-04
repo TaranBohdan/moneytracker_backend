@@ -1,4 +1,4 @@
-package org.bohdan.moneytracker.config;
+package org.bohdan.moneytracker.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
