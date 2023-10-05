@@ -2,6 +2,7 @@ package org.bohdan.moneytracker.configs;
 
 import lombok.RequiredArgsConstructor;
 import org.bohdan.moneytracker.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -19,12 +20,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig
 {
-    private final UserService userService;
-    private final JwtRequestFilter jwtRequestFilter;
+    private UserService userService;
+    private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    public void setUserService(UserService userService)
+    {
+        this.userService = userService;
+    }
+    @Autowired
+    public void setJwtRequestFilter(JwtRequestFilter jwtRequestFilter)
+    {
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
