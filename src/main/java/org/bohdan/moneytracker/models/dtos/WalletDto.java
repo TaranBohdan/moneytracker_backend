@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class WalletDto
 {
     private Integer id;
+    private Integer userId;
     private String name;
     private BigDecimal balance;
     private String currency;
