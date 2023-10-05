@@ -13,8 +13,8 @@ import java.util.List;
 public interface WalletMapper
 {
     List<WalletDto> toDtoList(List<Wallet> wallets);
+    @Mapping(source = "user.id", target = "userId")
     WalletDto toDto(Wallet wallet);
-    Wallet fromDto(WalletDto walletDto);
     Wallet fromCreateDto(WalletCreateDto walletCreateDto);
     Wallet fromUpdateDto(WalletUpdateDto walletUpdateDto, Integer id);
 }

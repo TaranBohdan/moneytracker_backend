@@ -41,7 +41,7 @@ public class WalletController
     {
         List<Wallet> wallets = walletService.getAll();
 
-        return ResponseEntity.ok(walletMapper.toDtoList(wallets));
+        return new ResponseEntity<>(walletMapper.toDtoList(wallets), HttpStatus.OK);
     }
 
     @Operation(description = "Get wallet by id")
@@ -58,10 +58,12 @@ public class WalletController
             ), HttpStatus.NOT_FOUND);
         }
 
-        return ResponseEntity.ok(walletMapper.toDto(wallet));
+        WalletDto walletDto = walletMapper.toDto(wallet);
+
+        return new ResponseEntity<>(walletDto, HttpStatus.OK);
     }
 
-    @Operation(description = "Get wallet by id")
+    @Operation(description = "Create wallet by id")
     @ApiResponse(responseCode = "200", description = "Wallet created")
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
@@ -99,8 +101,10 @@ public class WalletController
     @ApiResponse(responseCode = "204", description = "Wallet removed")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public void deleteWallet(@PathVariable(name = "id") Integer id)
+    public ResponseEntity<?> deleteWallet(@PathVariable(name = "id") Integer id)
     {
         walletService.deleteById(id);
+
+        return ResponseEntity.ok("Deleted");
     }
 }

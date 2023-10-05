@@ -22,8 +22,7 @@ public class User
     @OneToMany
             (
                     mappedBy = "user",
-                    fetch = FetchType.EAGER,
-                    cascade = CascadeType.ALL
+                    fetch = FetchType.EAGER
             )
     private List<Wallet> wallets;
 
