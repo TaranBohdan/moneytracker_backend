@@ -58,7 +58,7 @@ public class WalletController
             ), HttpStatus.NOT_FOUND);
         }
 
-        return ResponseEntity.ok(walletMapper.walletToWalletDto(wallet));
+        return ResponseEntity.ok(walletMapper.toDto(wallet));
     }
 
     @Operation(description = "Get wallet by id")
@@ -67,13 +67,13 @@ public class WalletController
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> createWallet(@RequestBody WalletCreateDto walletCreateDto)
     {
-        Wallet wallet = walletMapper.walletCreateDtoToWallet(walletCreateDto);
+        Wallet wallet = walletMapper.fromCreateDto(walletCreateDto);
         User user = userService.findByUsername(walletCreateDto.getUsernameOfUser()).orElse(null);
 
-        wallet.setUsers(List.of(user));
+        wallet.setUser(user);
         walletService.create(wallet);
 
-        WalletDto walletDto = walletMapper.walletToWalletDto(wallet);
+        WalletDto walletDto = walletMapper.toDto(wallet);
 
         return ResponseEntity.ok(walletDto);
     }
@@ -84,13 +84,13 @@ public class WalletController
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> updateWallet(@PathVariable(name = "id") Integer id, @RequestBody WalletUpdateDto walletUpdateDto)
     {
-        Wallet wallet = walletMapper.walletUpdateDtoToWallet(walletUpdateDto, id);
+        Wallet wallet = walletMapper.fromUpdateDto(walletUpdateDto, id);
         User user = userService.findByUsername(walletUpdateDto.getUsernameOfUser()).orElse(null);
 
-        wallet.setUsers(List.of(user));
+        wallet.setUser(user);
         walletService.update(wallet, id);
 
-        WalletDto walletDto = walletMapper.walletToWalletDto(wallet);
+        WalletDto walletDto = walletMapper.toDto(wallet);
 
         return ResponseEntity.ok(walletDto);
     }

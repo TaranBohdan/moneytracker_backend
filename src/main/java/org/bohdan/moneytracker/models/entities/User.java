@@ -19,12 +19,11 @@ public class User
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable
+    @OneToMany
             (
-                    name = "users_wallets",
-                    joinColumns = @JoinColumn(name = "user_id"),
-                    inverseJoinColumns = @JoinColumn(name = "wallet_id")
+                    mappedBy = "user",
+                    fetch = FetchType.EAGER,
+                    cascade = CascadeType.ALL
             )
     private List<Wallet> wallets;
 

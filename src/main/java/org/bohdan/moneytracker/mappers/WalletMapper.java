@@ -5,6 +5,7 @@ import org.bohdan.moneytracker.models.dtos.WalletDto;
 import org.bohdan.moneytracker.models.dtos.WalletUpdateDto;
 import org.bohdan.moneytracker.models.entities.Wallet;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -12,8 +13,8 @@ import java.util.List;
 public interface WalletMapper
 {
     List<WalletDto> toDtoList(List<Wallet> wallets);
-    WalletDto walletToWalletDto(Wallet wallet);
-    Wallet walletDtoToWallet(WalletDto walletDto);
-    Wallet walletCreateDtoToWallet(WalletCreateDto walletCreateDto);
-    Wallet walletUpdateDtoToWallet(WalletUpdateDto walletUpdateDto, Integer id);
+    WalletDto toDto(Wallet wallet);
+    Wallet fromDto(WalletDto walletDto);
+    Wallet fromCreateDto(WalletCreateDto walletCreateDto);
+    Wallet fromUpdateDto(WalletUpdateDto walletUpdateDto, Integer id);
 }
