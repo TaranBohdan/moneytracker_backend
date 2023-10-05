@@ -7,5 +7,8 @@ import java.util.List;
 public interface WalletService
 {
     List<Wallet> getAll();
-    //Wallet create(Wallet walletToCreate);
+    Wallet getById(Integer id);
+    Wallet create(Wallet wallet);
+    Wallet update(Wallet wallet, Integer id);
+    void deleteById(Integer id);
 }

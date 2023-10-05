@@ -3,7 +3,7 @@ package org.bohdan.moneytracker.models.entities;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -19,21 +19,21 @@ public class User
     @Column(name = "password")
     private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable
             (
                     name = "users_wallets",
                     joinColumns = @JoinColumn(name = "user_id"),
                     inverseJoinColumns = @JoinColumn(name = "wallet_id")
             )
-    private Collection<Wallet> wallets;
+    private List<Wallet> wallets;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable
             (
                     name = "users_roles",
                     joinColumns = @JoinColumn(name = "user_id"),
                     inverseJoinColumns = @JoinColumn(name = "role_id")
             )
-    private Collection<Role> roles;
+    private List<Role> roles;
 }

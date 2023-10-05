@@ -3,13 +3,13 @@ package org.bohdan.moneytracker.services;
 import lombok.RequiredArgsConstructor;
 import org.bohdan.moneytracker.models.dtos.SignupDto;
 import org.bohdan.moneytracker.models.entities.User;
-import org.bohdan.moneytracker.repositories.RoleRepository;
 import org.bohdan.moneytracker.repositories.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +28,7 @@ public class UserService implements UserDetailsService
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
         User user = findByUsername(username).orElseThrow(() ->
