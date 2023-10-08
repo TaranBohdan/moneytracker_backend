@@ -1,5 +1,6 @@
 package org.bohdan.moneytracker.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.bohdan.moneytracker.models.dtos.LoginDto;
 import org.bohdan.moneytracker.models.dtos.SignupDto;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Auth", description = "Auth management")
 public class AuthController
 {
     private final AuthService authService;

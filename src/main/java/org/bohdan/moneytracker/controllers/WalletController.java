@@ -22,9 +22,6 @@ import java.util.List;
 @RequestMapping("/wallets")
 @RequiredArgsConstructor
 @Tag(name = "Wallet", description = "Wallet management")
-@ApiResponse(responseCode = "500", description = "Internal error")
-@ApiResponse(responseCode = "400", description = "Validation failed")
-@ApiResponse(responseCode = "404", description = "Wallet not found")
 public class WalletController
 {
     private final WalletService walletService;
@@ -33,8 +30,7 @@ public class WalletController
     @Operation(description = "Get all wallets")
     @ApiResponse(responseCode = "200", description = "Wallets found")
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<?> getAllWalletsOfUser()
+    public ResponseEntity<?> getAll()
     {
         try
         {
@@ -51,7 +47,6 @@ public class WalletController
     @Operation(description = "Get wallet by id")
     @ApiResponse(responseCode = "200", description = "Wallet found")
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getWallet(@PathVariable(name = "id") Integer id)
     {
         Wallet wallet = walletService.getById(id);
@@ -67,7 +62,6 @@ public class WalletController
     @Operation(description = "Create wallet by id")
     @ApiResponse(responseCode = "200", description = "Wallet created")
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> createWallet(@RequestBody WalletCreateDto walletCreateDto)
     {
         Wallet wallet = walletMapper.fromCreateDto(walletCreateDto);
@@ -80,7 +74,6 @@ public class WalletController
     @Operation(description = "Updating wallet with id")
     @ApiResponse(responseCode = "204", description = "Wallet updated")
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> updateWallet(@PathVariable(name = "id") Integer id, @RequestBody WalletUpdateDto walletUpdateDto)
     {
         Wallet wallet = walletMapper.fromUpdateDto(walletUpdateDto, id);
@@ -93,7 +86,6 @@ public class WalletController
     @Operation(description = "Removing wallet with id")
     @ApiResponse(responseCode = "204", description = "Wallet removed")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> deleteWallet(@PathVariable(name = "id") Integer id)
     {
         walletService.deleteById(id);

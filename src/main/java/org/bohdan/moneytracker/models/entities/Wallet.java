@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "wallets")
@@ -26,4 +27,7 @@ public class Wallet
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")
     private User user;
+
+    @OneToMany(mappedBy = "wallet")
+    private List<Entrie> entries;
 }

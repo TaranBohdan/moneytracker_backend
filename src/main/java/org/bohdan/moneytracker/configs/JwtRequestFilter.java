@@ -41,7 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter
             }
             catch (ExpiredJwtException e)
             {
-                log.debug("Time of token es expiried!");
+                log.debug("Time of token es expired!");
             }
             catch (SignatureException e)
             {

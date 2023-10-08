@@ -13,6 +13,7 @@ public class UserDto
 {
     @Schema(description = "User id", example = "1")
     private Long id;
+
     @Schema(description = "User username", example = "username")
     private String username;
 }
