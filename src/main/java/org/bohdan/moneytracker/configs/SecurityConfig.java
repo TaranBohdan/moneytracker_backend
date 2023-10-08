@@ -43,7 +43,6 @@ public class SecurityConfig
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/wallets").authenticated()
                 .anyRequest().permitAll()
                 .and()

@@ -4,12 +4,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.bohdan.moneytracker.exceptions.AppError;
+import org.bohdan.moneytracker.handlers.ResponseHandler;
 import org.bohdan.moneytracker.mappers.WalletMapper;
 import org.bohdan.moneytracker.models.dtos.WalletCreateDto;
 import org.bohdan.moneytracker.models.dtos.WalletDto;
 import org.bohdan.moneytracker.models.dtos.WalletUpdateDto;
-import org.bohdan.moneytracker.models.entities.User;
 import org.bohdan.moneytracker.models.entities.Wallet;
 import org.bohdan.moneytracker.services.UserService;
 import org.bohdan.moneytracker.services.WalletService;
@@ -31,7 +30,6 @@ public class WalletController
 {
     private final WalletService walletService;
     private final WalletMapper walletMapper;
-    private final UserService userService;
 
     @Operation(description = "Get all wallets")
     @ApiResponse(responseCode = "200", description = "Wallets found")
@@ -39,9 +37,16 @@ public class WalletController
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> getAllWalletsOfUser()
     {
-        List<Wallet> wallets = walletService.getAll();
-
-        return new ResponseEntity<>(walletMapper.toDtoList(wallets), HttpStatus.OK);
+        try
+        {
+            List<Wallet> wallets = walletService.getAll();
+            List<WalletDto> walletDtos = walletMapper.toDtoList(wallets);
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, walletDtos, "Wallets");
+        }
+        catch (Exception e)
+        {
+            return ResponseHandler.generateError("Wallets were not found!", HttpStatus.NOT_FOUND);
+        }
     }
 
     @Operation(description = "Get wallet by id")
@@ -53,14 +58,11 @@ public class WalletController
         Wallet wallet = walletService.getById(id);
         if (wallet == null)
         {
-            return new ResponseEntity(new AppError(
-                    HttpStatus.NOT_FOUND.value(), String.format("Wallet wasn't found with id=%s", id)
-            ), HttpStatus.NOT_FOUND);
+            return ResponseHandler.generateError("Wallet was not found. Please, try again!", HttpStatus.NOT_FOUND);
         }
 
         WalletDto walletDto = walletMapper.toDto(wallet);
-
-        return new ResponseEntity<>(walletDto, HttpStatus.OK);
+        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, walletDto, "Wallets");
     }
 
     @Operation(description = "Create wallet by id")
@@ -70,14 +72,10 @@ public class WalletController
     public ResponseEntity<?> createWallet(@RequestBody WalletCreateDto walletCreateDto)
     {
         Wallet wallet = walletMapper.fromCreateDto(walletCreateDto);
-        User user = userService.findByUsername(walletCreateDto.getUsernameOfUser()).orElse(null);
-
-        wallet.setUser(user);
-        walletService.create(wallet);
-
+        walletService.create(wallet, walletCreateDto);
         WalletDto walletDto = walletMapper.toDto(wallet);
 
-        return ResponseEntity.ok(walletDto);
+        return ResponseHandler.generateResponse("Successfully created wallet!", HttpStatus.OK, walletDto, "Wallets");
     }
 
     @Operation(description = "Updating wallet with id")
@@ -87,14 +85,10 @@ public class WalletController
     public ResponseEntity<?> updateWallet(@PathVariable(name = "id") Integer id, @RequestBody WalletUpdateDto walletUpdateDto)
     {
         Wallet wallet = walletMapper.fromUpdateDto(walletUpdateDto, id);
-        User user = userService.findByUsername(walletUpdateDto.getUsernameOfUser()).orElse(null);
-
-        wallet.setUser(user);
-        walletService.update(wallet, id);
-
+        walletService.update(wallet, id, walletUpdateDto);
         WalletDto walletDto = walletMapper.toDto(wallet);
 
-        return ResponseEntity.ok(walletDto);
+        return ResponseHandler.generateResponse("Successfully updated wallet!", HttpStatus.OK, walletDto, "Wallets");
     }
 
     @Operation(description = "Removing wallet with id")
@@ -105,6 +99,6 @@ public class WalletController
     {
         walletService.deleteById(id);
 
-        return ResponseEntity.ok("Deleted");
+        return ResponseHandler.generateResponse("Successfully deleted wallet!", HttpStatus.OK, null, "Data");
     }
 }

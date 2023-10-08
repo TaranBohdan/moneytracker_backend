@@ -1,7 +1,7 @@
 package org.bohdan.moneytracker.services.implementations;
 
 import lombok.RequiredArgsConstructor;
-import org.bohdan.moneytracker.exceptions.AppError;
+import org.bohdan.moneytracker.handlers.ResponseHandler;
 import org.bohdan.moneytracker.models.dtos.LoginDto;
 import org.bohdan.moneytracker.models.dtos.SignupDto;
 import org.bohdan.moneytracker.models.dtos.TokenResponseDto;
@@ -35,21 +35,20 @@ public class AuthServiceImpl implements AuthService
 
         if (!password.equals(confirmPassword))
         {
-            return new ResponseEntity(new AppError(
-                    HttpStatus.BAD_REQUEST.value(), "Passwords must match!"
-            ), HttpStatus.BAD_REQUEST);
+            return ResponseHandler.generateError("Passwords must match!", HttpStatus.BAD_REQUEST);
         }
 
         if (userService.findByUsername(username).isPresent())
         {
-            return new ResponseEntity(new AppError(
-                    HttpStatus.BAD_REQUEST.value(), "A user with the same username is already registered!"
-            ), HttpStatus.BAD_REQUEST);
+            return ResponseHandler.generateError("A user with the same username is already registered!", HttpStatus.BAD_REQUEST);
         }
 
         User user = userService.createNewUser(signupDto);
 
-        return ResponseEntity.ok(new UserDto(user.getId(), user.getUsername()));
+        return ResponseHandler.generateResponse(
+                "User was created successfully!",
+                HttpStatus.OK,
+                new UserDto(user.getId(), user.getUsername()),"Users");
     }
 
     @Override
@@ -66,15 +65,16 @@ public class AuthServiceImpl implements AuthService
         {
             if (userService.findByUsername(username).isPresent())
             {
-                return new ResponseEntity(new AppError(
-                        HttpStatus.UNAUTHORIZED.value(), "Incorrect username or password!"
-                ), HttpStatus.UNAUTHORIZED);
+                return ResponseHandler.generateError("Incorrect username or password!", HttpStatus.UNAUTHORIZED);
             }
         }
 
         UserDetails userDetails = userService.loadUserByUsername(username);
         String token = jwtTokenUtils.generateToken(userDetails);
 
-        return ResponseEntity.ok(new TokenResponseDto(token));
+        return ResponseHandler.generateResponse(
+                "Token was generated successfully!",
+                HttpStatus.OK,
+                new TokenResponseDto(token), "Tokens");
     }
 }

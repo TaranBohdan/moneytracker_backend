@@ -1,8 +1,12 @@
 package org.bohdan.moneytracker.services.implementations;
 
 import lombok.RequiredArgsConstructor;
+import org.bohdan.moneytracker.models.dtos.WalletCreateDto;
+import org.bohdan.moneytracker.models.dtos.WalletUpdateDto;
+import org.bohdan.moneytracker.models.entities.User;
 import org.bohdan.moneytracker.models.entities.Wallet;
 import org.bohdan.moneytracker.repositories.WalletRepository;
+import org.bohdan.moneytracker.services.UserService;
 import org.bohdan.moneytracker.services.WalletService;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +17,7 @@ import java.util.List;
 public class WalletServiceImpl implements WalletService
 {
     private final WalletRepository walletRepository;
+    private final UserService userService;
 
     @Override
     public List<Wallet> getAll()
@@ -27,8 +32,10 @@ public class WalletServiceImpl implements WalletService
     }
 
     @Override
-    public Wallet create(Wallet wallet)
+    public Wallet create(Wallet wallet, WalletCreateDto walletCreateDto)
     {
+        User user = userService.findByUsername(walletCreateDto.getUsernameOfUser()).orElse(null);
+        wallet.setUser(user);
         return walletRepository.save(wallet);
     }
 
@@ -39,9 +46,11 @@ public class WalletServiceImpl implements WalletService
     }
 
     @Override
-    public Wallet update(Wallet wallet, Integer id)
+    public Wallet update(Wallet wallet, Integer id, WalletUpdateDto walletUpdateDto)
     {
         wallet.setId(id);
+        User user = userService.findByUsername(walletUpdateDto.getUsernameOfUser()).orElse(null);
+        wallet.setUser(user);
 
         return walletRepository.save(wallet);
     }
