@@ -10,7 +10,6 @@ import org.bohdan.moneytracker.models.dtos.WalletCreateDto;
 import org.bohdan.moneytracker.models.dtos.WalletDto;
 import org.bohdan.moneytracker.models.dtos.WalletUpdateDto;
 import org.bohdan.moneytracker.models.entities.Wallet;
-import org.bohdan.moneytracker.services.UserService;
 import org.bohdan.moneytracker.services.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +40,7 @@ public class WalletController
         {
             List<Wallet> wallets = walletService.getAll();
             List<WalletDto> walletDtos = walletMapper.toDtoList(wallets);
-            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, walletDtos, "Wallets");
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, walletDtos, "wallets");
         }
         catch (Exception e)
         {
@@ -62,7 +61,7 @@ public class WalletController
         }
 
         WalletDto walletDto = walletMapper.toDto(wallet);
-        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, walletDto, "Wallets");
+        return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, walletDto, "wallets");
     }
 
     @Operation(description = "Create wallet by id")
@@ -75,7 +74,7 @@ public class WalletController
         walletService.create(wallet, walletCreateDto);
         WalletDto walletDto = walletMapper.toDto(wallet);
 
-        return ResponseHandler.generateResponse("Successfully created wallet!", HttpStatus.OK, walletDto, "Wallets");
+        return ResponseHandler.generateResponse("Successfully created wallet!", HttpStatus.OK, walletDto, "wallets");
     }
 
     @Operation(description = "Updating wallet with id")
@@ -88,7 +87,7 @@ public class WalletController
         walletService.update(wallet, id, walletUpdateDto);
         WalletDto walletDto = walletMapper.toDto(wallet);
 
-        return ResponseHandler.generateResponse("Successfully updated wallet!", HttpStatus.OK, walletDto, "Wallets");
+        return ResponseHandler.generateResponse("Successfully updated wallet!", HttpStatus.OK, walletDto, "wallets");
     }
 
     @Operation(description = "Removing wallet with id")
@@ -99,6 +98,6 @@ public class WalletController
     {
         walletService.deleteById(id);
 
-        return ResponseHandler.generateResponse("Successfully deleted wallet!", HttpStatus.OK, null, "Data");
+        return ResponseHandler.generateResponse("Successfully deleted wallet!", HttpStatus.OK, null, "data");
     }
 }

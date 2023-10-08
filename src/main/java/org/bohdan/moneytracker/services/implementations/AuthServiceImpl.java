@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService
         return ResponseHandler.generateResponse(
                 "User was created successfully!",
                 HttpStatus.OK,
-                new UserDto(user.getId(), user.getUsername()),"Users");
+                new UserDto(user.getId(), user.getUsername()),"users");
     }
 
     @Override
@@ -75,6 +75,6 @@ public class AuthServiceImpl implements AuthService
         return ResponseHandler.generateResponse(
                 "Token was generated successfully!",
                 HttpStatus.OK,
-                new TokenResponseDto(token), "Tokens");
+                new TokenResponseDto(token), "tokens");
     }
 }
