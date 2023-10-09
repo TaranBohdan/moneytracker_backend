@@ -10,6 +10,7 @@ import org.bohdan.moneytracker.services.EntrieService;
 import org.bohdan.moneytracker.services.WalletService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class EntrieServiceImpl implements EntrieService
 {
     private final EntrieRepository entrieRepository;
     private final WalletService walletService;
+    private final WalletRepository walletRepository;
 
     @Override
     public List<Entrie> getAll()
@@ -32,9 +34,27 @@ public class EntrieServiceImpl implements EntrieService
         Wallet wallet = walletService.getById(entrieCreateDto.getWallet_id());
 
         entrie.setDate(new Date(System.currentTimeMillis()));
-        entrie.setWallet(wallet);
         entrie.setCurrency(wallet.getCurrency());
 
+        String incomeOrExpenses = entrieCreateDto.getType();
+        if (incomeOrExpenses.equalsIgnoreCase("expense"))
+        {
+            BigDecimal currentBalanceOfWallet = wallet.getBalance();
+            BigDecimal valueOfEntrie = entrieCreateDto.getValue();
+
+            wallet.setBalance(currentBalanceOfWallet.subtract(valueOfEntrie));
+            walletRepository.save(wallet);
+        }
+        if (incomeOrExpenses.equalsIgnoreCase("income"))
+        {
+            BigDecimal currentBalanceOfWallet = wallet.getBalance();
+            BigDecimal valueOfEntrie = entrieCreateDto.getValue();
+
+            wallet.setBalance(currentBalanceOfWallet.add(valueOfEntrie));
+            walletRepository.save(wallet);
+        }
+
+        entrie.setWallet(wallet);
         return entrieRepository.save(entrie);
     }
 
