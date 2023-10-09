@@ -1,7 +1,7 @@
 package org.bohdan.moneytracker.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.bohdan.moneytracker.models.enumerations.EntrieType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -26,11 +26,12 @@ public class Entrie
     private String category;
 
     @Column(name = "type")
-    private EntrieType type;
+    private String type;
 
     @Column(name = "date")
     private Date date;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "walletId")
     private Wallet wallet;

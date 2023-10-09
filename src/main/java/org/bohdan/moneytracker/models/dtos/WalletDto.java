@@ -2,8 +2,10 @@ package org.bohdan.moneytracker.models.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.bohdan.moneytracker.models.entities.Entrie;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Schema(name = "Wallet", description = "Wallet")
@@ -23,4 +25,7 @@ public class WalletDto
 
     @Schema(description = "Wallet currency", example = "EUR")
     private String currency;
+
+    @Schema(description = "Wallet entries", example = "[]")
+    private List<Entrie> entries;
 }

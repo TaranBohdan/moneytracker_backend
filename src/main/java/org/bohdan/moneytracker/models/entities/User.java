@@ -22,7 +22,7 @@ public class User
     @OneToMany
             (
                     mappedBy = "user",
-                    fetch = FetchType.EAGER
+                    fetch = FetchType.LAZY
             )
     private List<Wallet> wallets;
 

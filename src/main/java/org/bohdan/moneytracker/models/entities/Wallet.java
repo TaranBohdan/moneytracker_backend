@@ -28,6 +28,10 @@ public class Wallet
     @JoinColumn(name = "userId")
     private User user;
 
-    @OneToMany(mappedBy = "wallet")
+    @OneToMany
+            (
+                    mappedBy = "wallet",
+                    fetch = FetchType.LAZY
+            )
     private List<Entrie> entries;
 }
