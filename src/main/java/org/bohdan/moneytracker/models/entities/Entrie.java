@@ -26,6 +26,9 @@ public class Entrie
     @Column(name = "category")
     private String category;
 
+    @Column(name = "currency")
+    private String currency;
+
     @Column(name = "type")
     private String type;
 

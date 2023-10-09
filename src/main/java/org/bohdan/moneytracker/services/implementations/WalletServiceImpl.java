@@ -48,9 +48,13 @@ public class WalletServiceImpl implements WalletService
     @Override
     public Wallet update(Wallet wallet, Integer id, WalletUpdateDto walletUpdateDto)
     {
-        wallet.setId(id);
         User user = userService.findByUsername(walletUpdateDto.getUsernameOfUser()).orElse(null);
+
+        wallet.setId(id);
         wallet.setUser(user);
+        wallet.setName(wallet.getName());
+        wallet.setBalance(walletUpdateDto.getBalance());
+        wallet.setCurrency(walletUpdateDto.getCurrency());
 
         return walletRepository.save(wallet);
     }

@@ -74,7 +74,8 @@ public class WalletController
     @Operation(description = "Updating wallet with id")
     @ApiResponse(responseCode = "204", description = "Wallet updated")
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateWallet(@PathVariable(name = "id") Integer id, @RequestBody WalletUpdateDto walletUpdateDto)
+    public ResponseEntity<?> updateWallet(@PathVariable(name = "id") Integer id,
+                                          @RequestBody WalletUpdateDto walletUpdateDto)
     {
         Wallet wallet = walletMapper.fromUpdateDto(walletUpdateDto, id);
         walletService.update(wallet, id, walletUpdateDto);

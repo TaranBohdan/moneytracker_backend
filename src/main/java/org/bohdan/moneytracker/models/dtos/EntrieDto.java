@@ -14,9 +14,6 @@ public class EntrieDto
     @Schema(description = "Entrie id", example = "0")
     private Integer id;
 
-    @Schema(description = "Entrie name_wallet", example = "Card")
-    private String name_wallet;
-
     @Schema(description = "Entrie note", example = "One day ticket")
     private String note;
 

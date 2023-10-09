@@ -1,10 +1,7 @@
 package org.bohdan.moneytracker.services.implementations;
 
 import lombok.RequiredArgsConstructor;
-import org.bohdan.moneytracker.models.dtos.EntrieCreateDto;
-import org.bohdan.moneytracker.models.dtos.EntrieDto;
-import org.bohdan.moneytracker.models.dtos.WalletCreateDto;
-import org.bohdan.moneytracker.models.dtos.WalletUpdateDto;
+import org.bohdan.moneytracker.models.dtos.*;
 import org.bohdan.moneytracker.models.entities.Entrie;
 import org.bohdan.moneytracker.models.entities.Wallet;
 import org.bohdan.moneytracker.repositories.EntrieRepository;
@@ -36,6 +33,7 @@ public class EntrieServiceImpl implements EntrieService
 
         entrie.setDate(new Date(System.currentTimeMillis()));
         entrie.setWallet(wallet);
+        entrie.setCurrency(wallet.getCurrency());
 
         return entrieRepository.save(entrie);
     }
@@ -47,8 +45,24 @@ public class EntrieServiceImpl implements EntrieService
     }
 
     @Override
+    public Entrie update(Entrie entrie, Integer wallet_id, EntrieUpdateDto entrieUpdateDto)
+    {
+        Wallet wallet = walletService.getById(wallet_id);
+
+        entrie.setType(entrie.getType());
+        entrie.setNote(entrieUpdateDto.getNote());
+        entrie.setCategory(entrieUpdateDto.getCategory());
+        entrie.setValue(entrie.getValue());
+        entrie.setDate(entrieUpdateDto.getDate());
+        entrie.setWallet(wallet);
+        entrie.setCurrency(wallet.getCurrency());
+
+        return entrieRepository.save(entrie);
+    }
+
+    @Override
     public void deleteById(Integer id)
     {
-
+        entrieRepository.deleteById(id);
     }
 }

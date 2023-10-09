@@ -8,6 +8,7 @@ import org.bohdan.moneytracker.handlers.ResponseHandler;
 import org.bohdan.moneytracker.mappers.EntrieMapper;
 import org.bohdan.moneytracker.models.dtos.EntrieCreateDto;
 import org.bohdan.moneytracker.models.dtos.EntrieDto;
+import org.bohdan.moneytracker.models.dtos.EntrieUpdateDto;
 import org.bohdan.moneytracker.models.entities.Entrie;
 import org.bohdan.moneytracker.services.EntrieService;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("wallets/{id}/entries")
+@RequestMapping("wallets/{wallet_id}/entries")
 @RequiredArgsConstructor
 @Tag(name = "Entrie", description = "Entrie management")
 public class EntrieController
@@ -60,5 +61,37 @@ public class EntrieController
                 HttpStatus.OK,
                 entrieDto,
                 "entries");
+    }
+
+    @Operation(description = "Update entrie")
+    @ApiResponse(responseCode = "200", description = "Entrie updated")
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateEntrie(@RequestBody EntrieUpdateDto entrieUpdateDto,
+                                          @PathVariable(name = "id") Integer id,
+                                          @PathVariable(name = "wallet_id") Integer wallet_id)
+    {
+        Entrie entrie = entrieMapper.fromUpdateDto(entrieUpdateDto, id);
+        entrieService.update(entrie, wallet_id, entrieUpdateDto);
+        EntrieDto entrieDto = entrieMapper.toDto(entrie);
+
+        return ResponseHandler.generateResponse(
+                "Successfully updated entrie!",
+                HttpStatus.OK,
+                entrieDto,
+                "entries");
+    }
+
+    @Operation(description = "Delete entrie")
+    @ApiResponse(responseCode = "200", description = "Entrie deleted")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteEntrie(@PathVariable(name = "id") Integer id)
+    {
+        entrieService.deleteById(id);
+
+        return ResponseHandler.generateResponse(
+                "Successfully deleted wallet!",
+                HttpStatus.OK,
+                null,
+                "data");
     }
 }
