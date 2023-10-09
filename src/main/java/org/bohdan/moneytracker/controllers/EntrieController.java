@@ -46,11 +46,19 @@ public class EntrieController
         }
     }
 
-    @Operation(description = "Get all entries")
-    @ApiResponse(responseCode = "200", description = "Entries found")
+    @Operation(description = "Create new entrie")
+    @ApiResponse(responseCode = "200", description = "Entrie created")
     @PostMapping("")
     public ResponseEntity<?> createEntrie(@RequestBody EntrieCreateDto entrieCreateDto)
     {
-        return null;
+        Entrie entrie = entrieMapper.fromCreateDto(entrieCreateDto);
+        entrieService.create(entrie, entrieCreateDto);
+        EntrieDto entrieDto = entrieMapper.toDto(entrie);
+
+        return ResponseHandler.generateResponse(
+                "Entrie successfully created!",
+                HttpStatus.OK,
+                entrieDto,
+                "entries");
     }
 }

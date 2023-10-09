@@ -29,7 +29,7 @@ public class Entrie
     @Column(name = "type")
     private String type;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="dd-MM-yyyy")
     @Column(name = "date")
     private Date date;
 
