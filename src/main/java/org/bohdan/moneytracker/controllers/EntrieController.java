@@ -6,14 +6,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.bohdan.moneytracker.handlers.ResponseHandler;
 import org.bohdan.moneytracker.mappers.EntrieMapper;
+import org.bohdan.moneytracker.models.dtos.EntrieCreateDto;
 import org.bohdan.moneytracker.models.dtos.EntrieDto;
 import org.bohdan.moneytracker.models.entities.Entrie;
 import org.bohdan.moneytracker.services.EntrieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,5 +44,13 @@ public class EntrieController
         {
             return ResponseHandler.generateError("Entries were not found!", HttpStatus.NOT_FOUND);
         }
+    }
+
+    @Operation(description = "Get all entries")
+    @ApiResponse(responseCode = "200", description = "Entries found")
+    @PostMapping("")
+    public ResponseEntity<?> createEntrie(@RequestBody EntrieCreateDto entrieCreateDto)
+    {
+        return null;
     }
 }

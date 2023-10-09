@@ -1,11 +1,12 @@
 package org.bohdan.moneytracker.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Data
@@ -28,6 +29,7 @@ public class Entrie
     @Column(name = "type")
     private String type;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "date")
     private Date date;
 

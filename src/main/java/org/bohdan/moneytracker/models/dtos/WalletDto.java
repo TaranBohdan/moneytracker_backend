@@ -14,8 +14,8 @@ public class WalletDto
     @Schema(description = "Wallet id", example = "1")
     private Integer id;
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-    private Integer userId;
+    @Schema(description = "Wallet owner username", example = "username")
+    private String owner_username;
 
     @Schema(description = "Wallet name", example = "Card")
     private String name;
