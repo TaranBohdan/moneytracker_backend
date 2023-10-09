@@ -89,7 +89,7 @@ public class EntrieController
         entrieService.deleteById(id);
 
         return ResponseHandler.generateResponse(
-                "Successfully deleted wallet!",
+                "Successfully deleted entrie!",
                 HttpStatus.OK,
                 null,
                 "data");
