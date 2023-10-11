@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres:12'
+    container_name: 'moneytracker-db'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=root'
+      - 'POSTGRES_DB=moneytracker_db'
+
+  app:
+    container_name: 'moneytracker-app'
+    build: ./
+    environment:
+      - 'JWT.SECRET=bohdan'
+      - 'JWT.LIFETIME=30m'
+    ports:
+      - 8080:8080
