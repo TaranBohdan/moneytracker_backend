@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.bohdan.moneytracker.handlers.ResponseHandler;
 import org.bohdan.moneytracker.mappers.WalletMapper;
+import org.bohdan.moneytracker.models.dtos.UserDto;
 import org.bohdan.moneytracker.models.dtos.WalletCreateDto;
 import org.bohdan.moneytracker.models.dtos.WalletDto;
 import org.bohdan.moneytracker.models.dtos.WalletUpdateDto;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -92,5 +94,51 @@ public class WalletController
         walletService.deleteById(id);
 
         return ResponseHandler.generateResponse("Successfully deleted wallet!", HttpStatus.OK, null, "data");
+    }
+
+    @Operation(description = "Get general balance from all wallets")
+    @ApiResponse(responseCode = "200", description = "Balance was gotten")
+    @GetMapping("/generalbalance")
+    public ResponseEntity<?> getGeneralBalanceFromAllWallets(@RequestBody UserDto userDto)
+    {
+        try
+        {
+            BigDecimal generalBalance = walletService.getGeneralBalance(userDto);
+            return ResponseHandler.generateResponse(
+                    "Successfully got balance!",
+                    HttpStatus.OK,
+                    generalBalance,
+                    "General balance");
+        }
+        catch (Exception e)
+        {
+            return ResponseHandler.generateError("Balance was not found!", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Operation(description = "Get amount of expenses from all wallet")
+    @ApiResponse(responseCode = "200", description = "Expenses was gotten")
+    @GetMapping("/amountexpenses")
+    public ResponseEntity<?> getExpensesFromAllWallets(@RequestBody UserDto userDto)
+    {
+        BigDecimal amountOfExpenses = walletService.getExpenses(userDto);
+
+        return ResponseHandler.generateResponse(
+                "Successfully got balance!",
+                HttpStatus.OK,
+                amountOfExpenses,
+                "Amount of expenses");
+    }
+
+    @Operation(description = "Get cash flow")
+    @ApiResponse(responseCode = "200", description = "Cash flow was gotten")
+    @GetMapping("/cashflow")
+    public ResponseEntity<?> getCashFlow(@RequestBody UserDto userDto)
+    {
+        return ResponseHandler.generateResponse(
+                "Successfully got balance!",
+                HttpStatus.OK,
+                walletService.getCashFlow(userDto),
+                "Cash flow");
     }
 }
